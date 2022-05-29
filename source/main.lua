@@ -132,3 +132,24 @@ function doInvert()
 	inverted = not inverted
 	playdate.display.setInverted(inverted)
 end
+
+function playdate.gameWillPause()
+
+--	local img = gfx.image.new()
+
+	local img = gfx.getDisplayImage()
+	img = img:fadedImage(0.5, playdate.graphics.image.kDitherTypeScreen)
+
+	gfx.lockFocus(img)
+	local bgRect = playdate.geometry.rect.new(20, 20, 160, 200)
+	local textRect = playdate.geometry.rect.new(30, 30, 140, 180)
+	gfx.setColor(gfx.kColorWhite)
+	gfx.fillRoundRect(bgRect, 10)
+	gfx.setColor(gfx.kColorBlack)
+	gfx.drawRoundRect(bgRect, 10)
+	gfx.drawTextInRect(" Arc-for-crank \n\n adapted from PlaydateSDK \"arcs\" example \n\n by Martin Grider", textRect, 0, "...", kTextAlignment.center)
+	gfx.unlockFocus()
+
+	playdate.setMenuImage(img, 0)
+
+end
