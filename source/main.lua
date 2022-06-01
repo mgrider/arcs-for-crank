@@ -8,14 +8,18 @@ startAngle = 0
 ds = 0.4
 endAngle = 0
 de = 2
-radius = 120
+radius = 240
 nrings = 12
 
 innerRadius = 1 * radius/nrings
 outerRadius = 2 * radius/nrings
 
-autodraw = false
-inverted = false
+local autodraw = false
+local inverted = false
+
+local radiusMin = 120
+local radiusMax = 240
+local radiusIncrement = 5
 
 gfx.setStrokeLocation(gfx.kStrokeOutside)
 
@@ -82,12 +86,12 @@ function playdate.downButtonDown()
 end
 
 function playdate.leftButtonDown()
-	endAngle = endAngle - 10
+	if radius > radiusMin then radius -= radiusIncrement end
 	drawarc()
 end
 
 function playdate.rightButtonDown()
-	endAngle = endAngle + 10
+	if radius < radiusMax then radius += radiusIncrement end
 	drawarc()
 end
 
@@ -110,7 +114,7 @@ function reset()
 	ds = 0.4
 	endAngle = 0
 	de = 2
-	radius = 120
+	radius = 240
 	nrings = 12
 	innerRadius = 1 * radius/nrings
 	outerRadius = 2 * radius/nrings
@@ -121,7 +125,7 @@ function randomize()
 	gfx.clear()
 	startAngle = math.random(120)
 	endAngle = math.random(120)
---	radius = math.random(120)
+	radius = math.random(120, 240)
 	nrings = math.random(2,24)
 	innerRadius = math.random(120)
 	outerRadius = math.random(120)
@@ -147,7 +151,8 @@ function playdate.gameWillPause()
 	gfx.fillRoundRect(bgRect, 10)
 	gfx.setColor(gfx.kColorBlack)
 	gfx.drawRoundRect(bgRect, 10)
-	gfx.drawTextInRect(" Arc-for-crank \n\n adapted from PlaydateSDK \"arcs\" example \n\n by Martin Grider", textRect, 0, "...", kTextAlignment.center)
+	local text = " Arc-for-crank \n\n adapted from PlaydateSDK \"arcs\" example \n\n by Martin Grider"
+	gfx.drawTextInRect(text, textRect, 0, "...", kTextAlignment.center)
 	gfx.unlockFocus()
 
 	playdate.setMenuImage(img, 0)
